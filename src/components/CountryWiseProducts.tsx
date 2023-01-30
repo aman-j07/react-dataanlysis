@@ -16,7 +16,6 @@ function CountryWiseProducts(props: TProps) {
     let temp: data[] = [];
     data.forEach((ele) => {
       if (ele.Country === country) {
-        // let ind = temp.indexOf(ele);
         let ind =temp.findIndex(x => x.Description === ele.Description)
         if (ind > -1) {
           temp[ind].Quantity += ele.Quantity;
@@ -27,8 +26,6 @@ function CountryWiseProducts(props: TProps) {
     });
     setCountryOrders([...temp]);
   };
-
-  console.log('co-',countryOrders)
 
   return (
     <div className="card shadow rounded-2 p-4 mb-4">

@@ -78,9 +78,6 @@ function App() {
     setSelectData({ ...selectData });
   };
 
-  console.log(data);
-  console.log(selectData);
-
   return (
     <div className="App p-4">
       {loading ? (
