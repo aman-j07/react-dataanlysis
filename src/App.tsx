@@ -1,14 +1,28 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect,useState } from "react";
 import "./App.css";
 import CountryWiseProducts from "./components/CountryWiseProducts";
 import Invoice from "./components/Invoice";
 import Products from "./components/Products";
-import { data, selectData} from "./types";
+import { data, selectData } from "./types";
 
 function App() {
-  const refFile = useRef<HTMLInputElement>(null);
   const [data, setData] = useState<data[]>([]);
-  const [selectData,setSelectData]=useState<selectData>({custIds:[],products:[],countries:[]})
+  const [loading,setLoading]=useState<boolean>(false)
+  const [selectData, setSelectData] = useState<selectData>({
+    custIds: [],
+    products: [],
+    countries: [],
+  });
+
+  useEffect(()=>{
+    setLoading(true)
+    fetch( './sampledata.csv' )
+    .then( response => response.text() )
+    .then( responseText => {
+        convertToReadable(responseText)
+        setLoading(false)
+    })
+  },[])
 
   const convertToReadable = (data: string) => {
     const keys = data.slice(0, data.indexOf("\n")).split(",");
@@ -32,7 +46,10 @@ function App() {
         ) {
           selectData.custIds.push(item);
         }
-        if (keys[i] === "Description" && selectData.products.indexOf(item) === -1) {
+        if (
+          keys[i] === "Description" &&
+          selectData.products.indexOf(item) === -1
+        ) {
           selectData.products.push(item);
         }
         if (
@@ -47,45 +64,18 @@ function App() {
       return obj;
     });
     setData(valArrs);
-    setSelectData({...selectData})
+    setSelectData({ ...selectData });
   };
 
-  const readFile = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    const fileReader = new FileReader();
-    fileReader.onload = (e) => {
-      let text = e.target?.result;
-      convertToReadable(text!.toString());
-    };
-    fileReader.readAsText(refFile.current!.files![0]);
-  };
+  console.log(data);
+  console.log(selectData);
 
   return (
-    <div className="App px-4">
-      <form
-        className="border p-4 my-4 shadow rounded-2"
-        onSubmit={(e) => {
-          readFile(e);
-        }}
-      >
-        <div className="mb-3">
-          <label className="form-label">Select CSV file</label>
-          <input
-            type="file"
-            accept=".csv"
-            ref={refFile}
-            className="form-control"
-            id="exampleInputEmail1"
-          />
-        </div>
-
-        <button className="btn btn-primary" type="submit">
-          Submit
-        </button>
-      </form>
+    <div className="App p-4">
+      {loading&&<h1>Loading...</h1>}
       <Invoice data={data} custIds={selectData.custIds} />
       <Products data={data} products={selectData.products} />
-      <CountryWiseProducts data={data} countries={selectData.countries}/>
+      <CountryWiseProducts data={data} countries={selectData.countries} />
     </div>
   );
 }
