@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { billItems, data, order } from "../types";
 type TProps = {
   data: data[];
-  custIds: string[];
+  custIds: number[];
 };
 function Invoice(props: TProps) {
   const { data, custIds } = props;
@@ -14,18 +14,18 @@ function Invoice(props: TProps) {
     let temp: order[] = [];
     let gtotal=0;
     data.forEach((ele) => {
-      if (ele.CustomerID === id) {
+      if (ele.CustomerID === parseInt(id)) {
         let obj = {
           Description: ele.Description,
           Quantity: ele.Quantity,
           InvoiceDate: ele.InvoiceDate,
           UnitPrice: ele.UnitPrice,
-          Total: (parseFloat(ele.UnitPrice) * parseInt(ele.Quantity)).toFixed(
+          Total: (ele.UnitPrice * ele.Quantity).toFixed(
             2
           ),
         };
         temp.push(obj);
-        gtotal+=parseFloat(ele.UnitPrice) * parseInt(ele.Quantity)
+        gtotal+=ele.UnitPrice * ele.Quantity
       }
     });
     gtotal=parseFloat((gtotal).toFixed(2))

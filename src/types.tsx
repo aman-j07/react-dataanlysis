@@ -1,19 +1,19 @@
 export type data = {
-  InvoiceNo: string;
+  InvoiceNo: number;
   StockCode: string;
   Description: string;
-  Quantity: string;
+  Quantity: number;
   InvoiceDate: string;
-  UnitPrice: string;
-  CustomerID: string;
+  UnitPrice: number;
+  CustomerID: number;
   Country: string;
 };
 
 export type order = {
   Description: string;
-  Quantity: string;
+  Quantity: number;
   InvoiceDate: string;
-  UnitPrice: string;
+  UnitPrice: number;
   Total: string;
 };
 
@@ -29,7 +29,7 @@ export type prodDetails = {
 };
 
 export type selectData={
-    custIds:string[];
+    custIds:number[];
     products:string[];
     countries:string[];
 }

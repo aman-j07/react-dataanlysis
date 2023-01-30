@@ -3,37 +3,39 @@ import { data } from "../types";
 
 type TProps = {
   data: data[];
-  countries:string[];
+  countries: string[];
 };
 
 function CountryWiseProducts(props: TProps) {
-  const { data,countries } = props;
+  const { data, countries } = props;
   const [countryOrders, setCountryOrders] = useState<data[]>([]);
   const refCountry = useRef<HTMLSelectElement>(null);
+
   const generateCountryData = () => {
     let country = refCountry.current!.value;
     let temp: data[] = [];
     data.forEach((ele) => {
       if (ele.Country === country) {
-        let ind = temp.indexOf(ele);
-        if (ind > -1) temp[ind].Quantity += ele.Quantity;
-      } else {
-        temp.push(ele);
+        // let ind = temp.indexOf(ele);
+        let ind =temp.findIndex(x => x.Description === ele.Description)
+        if (ind > -1) {
+          temp[ind].Quantity += ele.Quantity;
+        }else {
+          temp.push(ele);
+        }
       }
     });
     setCountryOrders([...temp]);
   };
+
+  console.log('co-',countryOrders)
 
   return (
     <div className="card shadow rounded-2 p-4 mb-4">
       <form>
         <div className="mb-3">
           <label className="form-label">Select Country</label>
-          <select
-            ref={refCountry}
-            className="form-select"
-            onChange={generateCountryData}
-          >
+          <select ref={refCountry} className="form-select" onChange={generateCountryData}>
             {countries.map((ele) => {
               return (
                 <option key={ele} value={ele}>
@@ -53,10 +55,7 @@ function CountryWiseProducts(props: TProps) {
               <tbody>
                 {countryOrders.map((ele) => {
                   return (
-                    <tr>
-                      <td>{ele.Description}</td>
-                      <td>{ele.Quantity}</td>
-                    </tr>
+                    <tr><td>{ele.Description || 'dsg'}</td><td>{ele.Quantity || 46}</td></tr>
                   );
                 })}
               </tbody>

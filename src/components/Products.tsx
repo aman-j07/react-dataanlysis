@@ -25,7 +25,7 @@ function Products(props: TProps) {
     data.forEach((ele) => {
       if (ele.Description === description) {
         temp.OrderCount++;
-        temp.TotalQuantity += parseInt(ele.Quantity);
+        temp.TotalQuantity += ele.Quantity;
       }
     });
     setProdDetails({ ...temp });
