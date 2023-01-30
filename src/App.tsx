@@ -16,7 +16,7 @@ function App() {
 
   useEffect(()=>{
     setLoading(true)
-    fetch( './sampledata.csv' )
+    fetch( './online_retail.csv' )
     .then( response => response.text() )
     .then( responseText => {
         convertToReadable(responseText)
