@@ -25,8 +25,8 @@ function App() {
   },[])
 
   const convertToReadable = (data: string) => {
-    const keys = data.slice(0, data.indexOf("\n")).split(",");
-    const values = data.slice(data.indexOf("\n")).split("\n");
+    const keys = data.slice(0, data.indexOf("\r\n")).split(",");
+    const values = data.slice(data.indexOf("\r\n")+1).split("\r\n");
     let valArrs = values.map((ele) => {
       let obj: data = {
         InvoiceNo: "",
@@ -44,7 +44,7 @@ function App() {
           selectData.custIds.indexOf(item) === -1 &&
           String(parseInt(item)).length === 5
         ) {
-          selectData.custIds.push(item);
+          selectData.custIds.push(item.slice(0,-2));
         }
         if (
           keys[i] === "Description" &&
@@ -72,10 +72,10 @@ function App() {
 
   return (
     <div className="App p-4">
-      {loading&&<h1>Loading...</h1>}
-      <Invoice data={data} custIds={selectData.custIds} />
+      {loading?<span className="d-flex align-items-center gap-1 justify-content-center">Loading <img className="loader" src='https://i.gifer.com/origin/b4/b4d657e7ef262b88eb5f7ac021edda87.gif' alt='loader'/></span>:
+      <><Invoice data={data} custIds={selectData.custIds} />
       <Products data={data} products={selectData.products} />
-      <CountryWiseProducts data={data} countries={selectData.countries} />
+      <CountryWiseProducts data={data} countries={selectData.countries} /></>}
     </div>
   );
 }
