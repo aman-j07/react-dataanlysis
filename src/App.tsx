@@ -63,7 +63,7 @@ function App() {
   return (
     <div className="App px-4">
       <form
-        className="border d-inline-block p-4 my-4"
+        className="border p-4 my-4 shadow rounded-2"
         onSubmit={(e) => {
           readFile(e);
         }}

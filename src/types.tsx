@@ -17,6 +17,11 @@ export type order = {
   Total: string;
 };
 
+export type billItems={
+  items:order[],
+  gTotal:number
+}
+
 export type prodDetails = {
   Description: string;
   OrderCount: number;
